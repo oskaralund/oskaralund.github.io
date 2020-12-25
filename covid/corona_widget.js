@@ -64,7 +64,7 @@ export default class CoronaWidget
         'red', this.total_cases,'/img/death.svg'));
 
     //Load data
-    d3.json('/data/cases_rolling_means.json').then( d => {
+    d3.json('/covid/data/cases_rolling_means.json').then( d => {
       this.cases_data = d;
       var data = this.get_county_data('Sverige');
       this.timeseries.add(data, 'selected', this.unselected_color, 'Sverige');
@@ -72,7 +72,7 @@ export default class CoronaWidget
       this.timeseries.set_title('Nya fall');
     });
 
-    d3.json('/data/deaths.json').then(d => {
+    d3.json('/covid/data/deaths.json').then(d => {
       var range = [...Array(Object.keys(d['date']).length).keys()];
       this.deaths_data = range.map(
         i => [new Date(d['date'][i]),
@@ -80,7 +80,7 @@ export default class CoronaWidget
       );
     });
 
-    d3.json('/data/icu.json').then(d => {
+    d3.json('/covid/data/icu.json').then(d => {
       var range = [...Array(Object.keys(d['date']).length).keys()];
       this.icu_data = range.map(
         i => [new Date(d['date'][i]),
@@ -88,7 +88,7 @@ export default class CoronaWidget
       );
     });
 
-    d3.json('/data/totals.json').then(d => {
+    d3.json('/covid/data/totals.json').then(d => {
       this.totals_data = d;
       this.total_cases = d['cases']['Sverige'];
       this.buttons[0].set_number(this.total_cases);
@@ -185,4 +185,4 @@ function select_county(widget, county)
       .html(`COVID19 ${county}`);
 }
 
-var widget = new CoronaWidget('/data/sweden.json');
+var widget = new CoronaWidget('/covid/data/sweden.json');
