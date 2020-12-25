@@ -55,13 +55,13 @@ export default class CoronaWidget
     //Create buttons
     this.buttons.push(
       new Button('#corona_widget', 0, 310, 333, 60,
-        'green', this.total_cases,'/img/fever.svg'));
+        'green', this.total_cases,'/covid/img/fever.svg'));
     this.buttons.push(
       new Button('#corona_widget', 333, 310, 333, 60,
-        '#ffc202', this.total_cases,'/img/hospital-bed.svg'));
+        '#ffc202', this.total_cases,'/covid/img/hospital-bed.svg'));
     this.buttons.push(
       new Button('#corona_widget', 666, 310, 333, 60,
-        'red', this.total_cases,'/img/death.svg'));
+        'red', this.total_cases,'/covid/img/death.svg'));
 
     //Load data
     d3.json('/covid/data/cases_rolling_means.json').then( d => {
