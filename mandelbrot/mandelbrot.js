@@ -2,30 +2,18 @@ let canvas = document.querySelector("#glCanvas");
 let gl = canvas.getContext("webgl");
 
 const vsSource = `
-attribute vec4 a_position;
+attribute vec4 pos;
 
 void main() {
-  gl_Position = a_position;
+  gl_Position = pos;
 }
 `;
 
 const fsSource = `
-/* Fragment shader that renders Mandelbrot set */
 precision highp float;
-
-/* Width and height of screen in pixels */
 uniform vec2 u_resolution;
-
-/* Point on the complex plane that will be mapped to the center of the screen */
 uniform vec2 u_zoomCenter;
-
-/* Distance between left and right edges of the screen. This essentially specifies
-   which points on the plane are mapped to left and right edges of the screen.
-   Together, u_zoomCenter and u_zoomSize determine which piece of the complex
-   plane is displayed. */
 uniform float u_zoomSize;
-
-/* How many iterations to do before deciding that a point is in the set. */
 uniform int u_maxIterations;
 
 vec2 f(vec2 z, vec2 c) {
@@ -34,27 +22,21 @@ vec2 f(vec2 z, vec2 c) {
 
 void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution;
-
-  /* Decide which point on the complex plane this fragment corresponds to.*/
   vec2 c = u_zoomCenter + (uv * 4.0 -vec2(2.0)) * (u_zoomSize / 4.0);
-
-  /* Now iterate the function. */
   vec2 z = vec2(0.0);
   bool escaped = false;
-  float abs;
+  int num_iter = 0;
   for (int i = 0; i < 10000; i++) {
-    /* Unfortunately, GLES 2 doesn't allow non-constant expressions in loop
-       conditions so we have to do this ugly thing instead. */
+    num_iter += 1;
     if (i > u_maxIterations) break;
     z = f(z, c);
-    abs = length(z);
     if (length(z) > 2.0) {
       escaped = true;
       abs = 2.0;
       break;
     }
   }
-  gl_FragColor = vec4(abs/2.0, abs/2.0, abs/2.0, 1.0);
+  gl_FragColor = escaped ? vec4(vec3(float(num_iter))/float(u_maxIterations), 1.0) : vec4(vec3(0.0), 1.0);
 }
 `;
 
@@ -89,7 +71,7 @@ function createProgram(gl, vertexShader, fragmentShader) {
 }
 
 let program = createProgram(gl, vertexShader, fragmentShader);
-let positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+let positionAttributeLocation = gl.getAttribLocation(program, "pos");
 let positionBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
@@ -130,7 +112,7 @@ gl.uniform2fv(loc, [-0.7, 0]);
 loc = gl.getUniformLocation(program, "u_zoomSize");
 gl.uniform1f(loc, 3);
 loc = gl.getUniformLocation(program, "u_maxIterations");
-gl.uniform1i(loc, 50);
+gl.uniform1i(loc, 100);
 
 let primitiveType = gl.POINTS;
 let count = N * N;
