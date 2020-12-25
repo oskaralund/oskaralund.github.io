@@ -152,11 +152,15 @@ d3.select("body").on("keydown", function (e) {
     case 83: //down
       zoom_center[1] -= zoom*0.1;
       break;
-    case 69: //down
+    case 69: //E
       zoom *= 0.9;
       break;
-    case 81: //down
+    case 81: //Q
       zoom *= 1.1;
+      break;
+    case 82: //R
+      zoom = 3.0;
+      zoom_center = [-0.7, 0];
       break;
   }
   let loc = gl.getUniformLocation(program, "u_zoomCenter");
