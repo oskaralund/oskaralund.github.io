@@ -11,7 +11,7 @@ void main() {
 
 const fsSource = `
 /* Fragment shader that renders Mandelbrot set */
-precision mediump float;
+precision highp float;
 
 /* Width and height of screen in pixels */
 uniform vec2 u_resolution;
