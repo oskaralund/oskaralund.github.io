@@ -32,7 +32,6 @@ void main() {
     z = f(z, c);
     if (length(z) > 2.0) {
       escaped = true;
-      abs = 2.0;
       break;
     }
   }
