@@ -16,14 +16,6 @@ const Header = (): JSX.Element => (
           isActive ? "header__link--active" : "header__link"
         )}
       >
-        Home
-      </NavLink>
-      <NavLink
-        to="/about/"
-        className={({ isActive }) => (
-          isActive ? "header__link--active" : "header__link"
-        )}
-      >
         About
       </NavLink>
       <NavLink
